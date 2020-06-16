@@ -1,0 +1,8 @@
+.idea
+__pycache__
+log.txt
+*.pyc
+secret.py
+config.py
+database_secret.conf
+pl_bbs.nginx

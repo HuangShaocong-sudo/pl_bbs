@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}主页{% endblock%}
+{% block style %}
+    <link type="text/css" rel="stylesheet" href="/static/netease_files/style.css">
+    <link rel="stylesheet" href="/static/netease_files/open-pc_styles_pages_index-971b4c4d39.css">
+    <script src="/static/netease_files/vue.js.下载"></script>
+{% endblock %}
+{% block main %}
+    <div class="m-indexMain">
+        <div class="g-container home-activity-discount" style="display: block;">
+            <a href="/topic" class="CourseListItem-listItem">
+                <div class="CourseListItem-cover">
+                    <div class="CourseListItem-img" style="background-image: url(&quot;./images/topics.jpg&quot;);">
+                        <img src="./images/topics.jpg" alt="">
+                    </div>
+                </div>
+                <div class="CourseListItem-body">
+                    <div class="CourseListItem-info">
+                        <div class="CourseListItem-text-ellipsis-line-2 CourseListItem-title">话题讨论</div>
+                        <div class="CourseListItem-subtitle">疑难解答、经验分享、交流请进这里</div>
+                    </div>
+                </div>
+            </a>
+            <a href="/wall" class="CourseListItem-listItem">
+                <div class="CourseListItem-cover">
+                    <div class="CourseListItem-img" style="background-image: url(&quot;./images/wall.jpg&quot;);">
+                        <img src="./images/wall.jpg" alt="">
+                    </div>
+                </div>
+                <div class="CourseListItem-body">
+                    <div class="CourseListItem-info">
+                        <div class="CourseListItem-text-ellipsis-line-2 CourseListItem-title">留言墙</div>
+                        <div class="CourseListItem-subtitle">重要通知、兼职、闲置物品请贴在这里</div>
+                    </div>
+                </div>
+            </a>
+            <a href="/file" class="CourseListItem-listItem">
+                <div class="CourseListItem-cover">
+                    <div class="CourseListItem-img" style="background-image: url(&quot;./images/cube.png&quot;);">
+                        <img src="./images/cube.png" alt="">
+                    </div>
+                </div>
+                <div class="CourseListItem-body">
+                    <div class="CourseListItem-info">
+                        <div class="CourseListItem-text-ellipsis-line-2 CourseListItem-title">文件分享</div>
+                        <div class="CourseListItem-subtitle">模板、课件等文件下载/上传请进这里</div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+{% endblock %}

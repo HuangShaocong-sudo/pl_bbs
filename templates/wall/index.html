@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block title %}留言墙{% endblock%}
+{% block main %}
+
+<div id="main">
+
+    <div id="content">
+        <div class="panel">
+            <div class="header">
+                {% for w in ws %}
+                <a href="/wall?id={{ w.id }}"
+                   class="topic-tab current-tab">
+                    {{ w.title }}
+                </a>
+                {% endfor %}
+            </div>
+
+            <div class="inner post">
+                <div class="words_list">
+                 {% for m in ms %}
+                    {% set u = m.user() %}
+                    <div class="panel">
+                        <div class='cell reply_area reply_item'>
+                            <div class='author_content'>
+                                <div class='user_info'>
+                                    <a class='dark reply_author'>
+                                        {{ u.username }}
+                                    </a>
+                                    <a class="reply_time">
+                                        <span>{{ m.created_time | format_time}}</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class='reply_content'>
+                                <div class="markdown-text">{{ m.content | safe | remove_script }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="inter"></div>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+    {% if login_user %}
+    <div class="panel">
+        <div class="header">
+          <span class="col_fade">添加留言</span>
+        </div>
+        <div class="inner reply">
+            <form id="reply_form" action="{{ url_for('wall.add') }}" method="post">
+
+                <span class="tab-selector">选择留言墙：</span>
+                <select name="wall_id" id="wall" required>
+                    {% for w in ws %}
+
+                            <option value="{{ w.id }}" >{{ w.title }}</option>
+
+                    {% endfor %}
+                </select>
+
+                <input type="hidden" name="user_id" value="{{ login_user.id }}">
+                <div class="markdown_editor in_editor">
+                  <div class="markdown_in_editor">
+                    <textarea class="editor" name="content" rows="8"></textarea>
+                    <div class="editor_buttons">
+                        <input class="span-primary submit_btn" type="submit" data-loading-text="回复中.." value="回复">
+                    </div>
+                  </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+
+<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+<link rel="stylesheet" href="/static/css/style.css">
+<script src="https://cdn.bootcss.com/marked/0.3.19/marked.min.js"></script>
+<script src="https://cdn.bootcss.com/prism/1.13.0/prism.js"></script>
+<script src="https://cdn.bootcss.com/prism/1.13.0/plugins/autoloader/prism-autoloader.min.js"></script>
+<script>
+    var e = function (sel) {
+        return document.querySelector(sel)
+    }
+
+    var es = function (sel) {
+        return document.querySelectorAll(sel)
+    }
+
+    var markContents = function () {
+        // markdown -> html 的处理放在高亮前面
+        // 因为高亮是针对 html 格式的
+        // lang -> language 不需要转 prism 自动转了
+        var contentDivs = es('.markdown-text')
+        for (var i = 0; i < contentDivs.length; i++) {
+            var contentDiv = contentDivs[i]
+            console.log('pre marked', contentDiv.textContent)
+            var content = marked(contentDiv.textContent)
+            console.log('after marked', content)
+            contentDiv.innerHTML = content
+        }
+    }
+
+    var highlight = function() {
+         // 自动加载对应的语言 不然要手动加入各个语言的 js
+        Prism.plugins.autoloader.languages_path = 'https://cdn.bootcss.com/prism/1.13.0/components/'
+    }
+
+    var __main = function () {
+        markContents()
+        highlight()
+    }
+
+    __main()
+
+</script>
+
+{% endblock %}

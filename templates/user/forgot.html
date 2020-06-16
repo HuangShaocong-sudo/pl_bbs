@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %} 设置 {% endblock%}
+{% block main %}
+
+<div id="main">
+    <div id="sidebar">
+        <div class="panel">
+        </div>
+    </div>
+
+    <div id="content">
+        <div class="panel">
+            {% if result == '' %}
+            <div class="header">
+              <ul class="breadcrumb">
+                <li><a href="/">主页</a><span class="divider">/</span></li>
+                <li class="active">找回密码</li>
+              </ul>
+            </div>
+
+            <div class="inner">
+                <form id="search_pass_form" class="form-horizontal" action="{{ url_for('.forgot_send') }}" method="post">
+                    <div class="control-group">
+                        <label class="control-label" for="email">用户名</label>
+                        <div class="controls">
+                            <input class="input-xlarge" id="username" name="username" size="30" type="text">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="email">电子邮箱</label>
+                        <div class="controls">
+                            <input class="input-xlarge" id="email" name="email" size="30" type="text">
+                            <p class="help-block">请输入您注册帐户时使用的电子邮箱</p>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <input type="submit" class="span-primary" value="提交">
+                    </div>
+                </form>
+            </div>
+
+            {% elif result == 'send' %}
+            <div class="header">
+              <ul class="breadcrumb">
+                <li><a href="/">主页</a><span class="divider">/</span></li>
+                <li class="active">通知</li>
+              </ul>
+            </div>
+            <div class="inner">
+                <div class="alert alert-success">
+                    <strong>已给您填写的电子邮箱发送了一封邮件，请点击里面的链接来重置密码。</strong>
+                </div>
+                <a href="/"><span class="span-common">返回</span></a>
+            </div>
+
+            {% elif result == 'error' %}
+            <div class="header">
+              <ul class="breadcrumb">
+                <li><a href="/">主页</a><span class="divider">/</span></li>
+                <li class="active">通知</li>
+              </ul>
+            </div>
+            <div class="inner">
+                <div class="alert alert-fail">
+                    <strong>输入的用户名或邮箱不正确</strong>
+                </div>
+                <a href="/"><span class="span-common">返回</span></a>
+            </div>
+
+            {% elif result == 'reset' %}
+            <div class="header">
+              <ul class="breadcrumb">
+                <li><a href="/">主页</a><span class="divider">/</span></li>
+                <li class="active">设置新密码</li>
+              </ul>
+            </div>
+
+            <div class="inner">
+                <form id="update_pass_form" class="form-horizontal" action="{{ url_for('.forgot_update', token=token) }}" method="post">
+                    <div class="control-group">
+                        <label class="control-label" for="new_pwd">新密码</label>
+                        <div class="controls">
+                            <input class="input-xlarge" id="new_pwd" name="new_pwd" size="30" type="text">
+                            <p class="help-block">请输入新的密码</p>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <input type="submit" class="span-primary" value="提交">
+                    </div>
+                </form>
+            </div>
+
+            {% elif result == 'updated' %}
+            <div class="header">
+              <ul class="breadcrumb">
+                <li><a href="/">主页</a><span class="divider">/</span></li>
+                <li class="active">通知</li>
+              </ul>
+            </div>
+            <div class="inner">
+                <div class="alert alert-success">
+                    <strong>您的密码已经重置， 请重新登录。</strong>
+                </div>
+                <a href="/"><span class="span-common">返回</span></a>
+            </div>
+
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

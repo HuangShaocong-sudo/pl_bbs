@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}话题{% endblock%}
+{% block main %}
+
+<div id="main">
+    <div id="sidebar">
+
+        {% if login_user %}
+        <div class="panel">
+            <div class="header">
+              <span class="col_fade">个人信息</span>
+            </div>
+            <div class="inner">
+                <div class="user_card">
+                    <div>
+                        <a class="user_avatar" href="{{ url_for('index.user_detail', username=login_user.username) }}">
+                            <img class="user_small_avatar" src="{{ login_user.image }}" title="{{ login_user.username }}">
+                        </a>
+                        <span class="user_name"><a class="dark" href="{{ url_for('index.user_detail', username=login_user.username) }}">
+                            {{ login_user.username }}</a></span>
+                        <div class="space clearfix"></div>
+                        <span class="signature">
+<!--                            “这家伙很懒，什么个性签名都没有留下。”-->
+                            {{ login_user.signature }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="inner">
+                <a href="/topic/new?board_id={{ bid }}" class="create_topic_btn">
+                    <span class="span-success">发布话题</span>
+                </a>
+            </div>
+        </div>
+        {% else %}
+        <div class="panel">
+            <div class="inner">
+                <p>PiggiesLand</p>
+                <div>
+                    请
+                    <a href="/login_view">登录或注册</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+
+
+    <div id="content">
+        <div class="panel">
+            <div class="header">
+                {% for b in bs %}
+                <a href="/topic?board_id={{ b.id }}"
+                   class="topic-tab current-tab">
+                    {{ b.title }}
+                </a>
+                {% endfor %}
+            </div>
+
+            <div class="inner post">
+                <div class="topic_list">
+                    {% for t in ms %}
+                    <div class="cell">
+                        <a class="user_avatar pull-left" href="/user/{{ t.user().username }}">
+                            <img src={{ t.user().image }} title={{ t.user().username }}>
+                        </a>
+                        <span class="reply_count pull-left">
+                            <span class="count_of_replies" title="回复数">
+                              {{ t.replies() | count }}
+                            </span>
+                            <span class="count_seperator">/</span>
+                            <span class="count_of_visits" title="点击数">
+                              {{ t.views }}
+                            </span>
+                        </span>
+
+                        <a class="last_time pull-right" href="{{ url_for('topic.detail', id=t.id) }}">
+                            {% if t.replies() != [] %}
+                            {% set r = t.replies()[-1] %}
+                            <img class="user_small_avatar" src="{{ r.user().image }}">
+                            <span class="last_active_time">{{ r.created_time | format_time }}</span>
+                            {% else %}
+                            <span class="last_active_time">{{ t.created_time | format_time }}</span>
+                            {% endif %}
+                        </a>
+
+                        <div class="topic_title_wrapper">
+                            {% if bid == 1 or bid == -1 %}
+                            <span class="topiclist-tab">{{ t.board_title() }}</span>
+                            {% endif %}
+                            <a class="topic_title" href="{{ url_for('topic.detail', id=t.id) }}">
+                                {{ t.title }}
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

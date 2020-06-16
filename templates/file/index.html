@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}文件分享{% endblock%}
+
+{% block style %}
+    <link rel="stylesheet" href="/static/PyPI · The Python Package Index_files/warehouse.311075c5.css">
+{% endblock%}
+
+{% block main %}
+
+<div id="main">
+
+    <div id="content">
+        <div class="panel">
+            <div class="header">
+                {% for c in cs %}
+                <a href="/file?c_id={{ c.id }}"
+                   class="topic-tab current-tab">
+                    {{ c.title }}
+                </a>
+                {% endfor %}
+            </div>
+
+            <div class="inner post">
+                <div class="file_list">
+                    <div class="site-container">
+                        <div class="col-half">
+                            <ul class="unstyled" aria-labelledby="pypi-trending-packages">
+                                {% for f in fs %}
+                                <li>
+                                    <a class="package-snippet" href="{{ url_for('file.download', filename=f.localname) }}" rel="nofollow">
+                                    <h3 class="package-snippet__title">
+                                    <span class="package-snippet__name">{{ f.filename }}</span>
+                                    </h3>
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% if login_user %}
+    <div class="panel">
+        <div class="header">
+          <span class="col_fade">上传文件</span>
+        </div>
+        <div class="inner">
+            <form method="post"
+                  action="{{ url_for('file.upload') }}"
+                  enctype="multipart/form-data"
+            >
+                <span class="tab-selector">选择文件类别：</span>
+                <select name="college_id" id="college" required="">
+                    {% for c in cs %}
+
+                            <option value="{{ c.id }}" >{{ c.title }}</option>
+
+                    {% endfor %}
+                </select>
+<!--                <input type="hidden" name="user_id" value="{{ login_user.id }}">-->
+                <div>
+                    <input type="file" name="myfile">
+                    <button type="submit">上传</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}

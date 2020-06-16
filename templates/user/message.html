@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %} 消息 {% endblock%}
+{% block main %}
+
+<div id="main">
+    <div id="sidebar">
+        <div class="panel">
+        </div>
+    </div>
+
+    <div id="content">
+        <div class="panel">
+            <div class="header">
+                <ul class="breadcrumb">
+                    <li><a href="/">主页</a><span class="divider">/</span></li>
+                    <li class="active">新消息</li>
+                </ul>
+            </div>
+            {% if unread|length > 0 %}
+                {% for m in unread %}
+                {% set t = m.topic() %}
+                <div class="cell message" message_id="{{ m.id }}">
+                    <span>
+                        <a href="{{ url_for('index.user_detail', username=m.replier()) }}" target="_blank">{{ m.replier() }}</a>
+                        在话题
+                        <a href="{{ url_for('topic.detail', id=t.id) }}" target="_blank">{{ t.title }}</a>
+                        呼唤了你
+                    </span>
+                    <div>{{ m.content }}</div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="inner">
+                    <p>无消息</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="panel">
+            <div class="header">
+                <span class="col_fade">过往信息</span>
+            </div>
+            {% if read|length > 0 %}
+                {% for m in read %}
+                {% set t = m.topic() %}
+                <div class="cell message" message_id="{{ m.id }}">
+                    <span>
+                        <a href="{{ url_for('index.user_detail', username=m.replier()) }}" target="_blank">{{ m.replier() }}</a>
+                        在话题
+                        <a href="{{ url_for('topic.detail', id=t.id) }}" target="_blank">{{ t.title }}</a>
+                        呼唤了你
+                    </span>
+                    <div>{{ m.content }}</div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="inner">
+                    <p>无消息</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
